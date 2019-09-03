@@ -1,0 +1,14 @@
+.van-nav-bar {
+  background-color: #3e9df8;
+}
+.van-nav-bar .van-nav-bar__title {
+  color: #fff;
+}
+.van-cell {
+  display: flex;
+  align-items: center;
+}
+.login .login_a {
+  width: 90%;
+  margin: 20px;
+}
