@@ -53,19 +53,28 @@ export default {
     // 点击按钮处理登录
     async onLogin () {
       try {
-        // data是接口返回数据中的data，在拦截器做了处理
-        const data = await login(this.user)
-        console.log(data)
-        // 存储登录的状态，因为有的页面需要去验证有没有登录，所以需要存储
-        // 1，存储vuex中,但是刷新之后就没了，所以我们要把token保存到本地存储中
-        // this.$store.commit('setUser', data)
-        // 2，存储本地存中window.localStorage
-        // window.localStorage.setItem('user', JSON.stringify())
-        this.setUser(data)// 调用
-        // 编程式导航跳转到首页
-        this.$router.push('/')
-        // vant框架提示
-        this.$toast.success('登陆成功')
+        // 表单验证
+        this.$validator.validate().then(async valid => {
+          // 验证失败
+          if (!valid) {
+            return
+          }
+          // 验证成功
+          // data是接口返回数据中的data，在拦截器做了处理
+          const data = await login(this.user)
+          console.log(data)
+          // 存储登录的状态，因为有的页面需要去验证有没有登录，所以需要存储
+          // 1，存储vuex中,但是刷新之后就没了，所以我们要把token保存到本地存储中
+          // this.$store.commit('setUser', data)
+          // 2，存储本地存中window.localStorage
+          // window.localStorage.setItem('user', JSON.stringify())
+          this.setUser(data)// 调用
+
+          // 编程式导航跳转到首页
+          this.$router.push('/')
+          // vant框架提示
+          this.$toast.success('登陆成功')
+        })
       } catch (err) {
         // vant框架提示
         this.$toast.fail('登录失败')
