@@ -18,6 +18,7 @@
 
 <script>
 import { login } from '@/api/user'// 按需加载导入登录函数的封装
+import { mapMutations } from 'vuex'// 简化本地存储导入到vuex中
 export default {
   name: 'Login',
   data () {
@@ -29,6 +30,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setUser']),
     // 点击按钮处理登录
     async onLogin () {
       try {
@@ -37,9 +39,10 @@ export default {
         console.log(data)
         // 存储登录的状态，因为有的页面需要去验证有没有登录，所以需要存储
         // 1，存储vuex中,但是刷新之后就没了，所以我们要把token保存到本地存储中
-        this.$store.commit('setUser', data)
+        // this.$store.commit('setUser', data)
         // 2，存储本地存中window.localStorage
-        window.localStorage.setItem('user', JSON.stringify())
+        // window.localStorage.setItem('user', JSON.stringify())
+        this.setUser(data)// 调用
         // 编程式导航跳转到首页
         this.$router.push('/')
         // vant框架提示
