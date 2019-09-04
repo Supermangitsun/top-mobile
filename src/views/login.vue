@@ -36,9 +36,10 @@ export default {
         const data = await login(this.user)
         console.log(data)
         // 存储登录的状态，因为有的页面需要去验证有没有登录，所以需要存储
-        // 1，存储vuex中
+        // 1，存储vuex中,但是刷新之后就没了，所以我们要把token保存到本地存储中
         this.$store.commit('setUser', data)
-        // 2，存储本地存中window.lonction
+        // 2，存储本地存中window.localStorage
+        window.localStorage.setItem('user', JSON.stringify())
         // 编程式导航跳转到首页
         this.$router.push('/')
         // vant框架提示
