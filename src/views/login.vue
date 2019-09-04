@@ -3,10 +3,11 @@
     <!-- 导航头 -->
     <van-nav-bar title="请登录" />
     <!-- 输入框 -->
+    <!-- 进行表单验证v-validate="'required'" -->
     <van-cell-group>
-      <van-field v-model="user.mobile" clearable left-icon="phone-o" placeholder="请输入手机号" />
-      <van-field v-model="user.code"  left-icon="contact" placeholder="请输入密码">
-           <van-button slot="button" type="default" size='small'>发送验证码</van-button>
+      <van-field  v-validate="'required|digits:11'" :error-message="errors.first('mobile') " name='mobile' v-model="user.mobile" clearable left-icon="phone-o" placeholder="请输入手机号" />
+      <van-field v-validate="'required|digits:6'" :error-message="errors.first('code') " name='code' v-model="user.code"  left-icon="contact" placeholder="请输入密码">
+           <van-button slot="button" type="default" size='small'>获取验证码</van-button>
      </van-field>
     </van-cell-group>
     <!-- 登录按钮 -->
@@ -28,6 +29,24 @@ export default {
         code: '246810'
       }
     }
+  },
+  // 配置validate的自定义验证信息
+  created () {
+    const dict = {
+      custom: {
+        // 验证文本框
+        mobile: {
+          required: '请输入手机号',
+          digits: '手机号码必须是11位数字'
+        },
+        code: {
+          required: '请输入验证码',
+          digits: '验证码必须是6为数字'
+        }
+      }
+    }
+
+    this.$validator.localize('en', dict)
   },
   methods: {
     ...mapMutations(['setUser']),
