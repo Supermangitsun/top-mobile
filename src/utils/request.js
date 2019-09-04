@@ -27,8 +27,8 @@ instance.interceptors.request.use(function (config) {
 
 // 添加一个相应拦截器
 instance.interceptors.response.use(function (response) {
-  // 处理响应数据
-  return response
+  // 处理响应数据,接口返回的数据都有data，统一返回接口返回的data，如果此时返回的没有data那么就返回axios响应对象的data
+  return response.data.data || response.data
 }, function (error) {
   // 处理响应错误
   return Promise.reject(error)

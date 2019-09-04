@@ -32,10 +32,20 @@ export default {
     // 点击按钮处理登录
     async onLogin () {
       try {
-        const res = await login(this.user)
-        console.log(res)
+        // data是接口返回数据中的data，在拦截器做了处理
+        const data = await login(this.user)
+        console.log(data)
+        // 存储登录的状态，因为有的页面需要去验证有没有登录，所以需要存储
+        // 1，存储vuex中
+        this.$store.commit('setUser', data)
+        // 2，存储本地存中window.lonction
+        // 编程式导航跳转到首页
+        this.$router.push('/')
+        // vant框架提示
+        this.$toast.success('登陆成功')
       } catch (err) {
-        console.log(err)
+        // vant框架提示
+        this.$toast.fail('登录失败')
       }
     }
   }
