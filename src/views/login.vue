@@ -12,7 +12,7 @@
     </van-cell-group>
     <!-- 登录按钮 -->
     <div class="login">
-        <van-button class="login_a" type="info" @click="onLogin">登录</van-button>
+        <van-button :loading='loading' loading-type="spinner" loading-text="登陆中..." class="login_a" type="info" @click="onLogin">登录</van-button>
     </div>
   </div>
 </template>
@@ -27,7 +27,9 @@ export default {
       user: {
         mobile: '13673863637',
         code: '246810'
-      }
+      },
+      // 控制按钮是否显示正在登录
+      loading: false
     }
   },
   // 配置validate的自定义验证信息
@@ -52,11 +54,13 @@ export default {
     ...mapMutations(['setUser']),
     // 点击按钮处理登录
     async onLogin () {
+      this.loading = true
       try {
         // 表单验证
         this.$validator.validate().then(async valid => {
           // 验证失败
           if (!valid) {
+            this.loading = false
             return
           }
           // 验证成功
@@ -79,6 +83,7 @@ export default {
         // vant框架提示
         this.$toast.fail('登录失败')
       }
+      this.loading = false
     }
   }
 }
