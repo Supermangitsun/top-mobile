@@ -1,5 +1,6 @@
 import axios from 'axios'
 import JSONbig from 'json-bigint'
+import store from '@/store'
 // 避免只作用一个服务器
 const instance = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/app/',
@@ -18,6 +19,11 @@ instance.defaults.transformResponse = [function (data) {
 }]
 // 拦截器
 instance.interceptors.request.use(function (config) {
+  // 注意，此处是一个普通的js模块，不是组件，要导入store
+  if (store.state.user) {
+    // 如果有登录状态请求的时候，自动携带token
+    config.headers.Authorization = `Bearer ${store.state.user.token}`
+  }
   // 发送之前做的
   return config
 }, function (error) {
